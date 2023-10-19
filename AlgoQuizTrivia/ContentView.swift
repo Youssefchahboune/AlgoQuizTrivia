@@ -12,7 +12,7 @@ struct NavBar: View {
     @State private var menuHeight: CGFloat = 0.0
 
     var body: some View {
-        VStack(alignment: .leading) {
+        VStack(alignment: .leading,spacing: 0) {
             HStack {
                 Text("AlgoQuiz").foregroundColor(.white).padding(.leading, 20).fontWeight(.black)
                 Spacer()
@@ -20,7 +20,7 @@ struct NavBar: View {
                     withAnimation {
                         isMenuVisible.toggle()
                         if isMenuVisible {
-                            menuHeight = 75.0
+                            menuHeight = 100.0
                         } else {
                             menuHeight = 0.0
                         }
@@ -33,13 +33,13 @@ struct NavBar: View {
                 }
             }.frame(height: 70).background(Color.blue)
 
-            ZStack {
+            ZStack(alignment: .leading) {
                 Rectangle()
                     .frame(height: menuHeight)
                     .foregroundColor(.blue)
-                    .animation(.easeInOut(duration: 0.3)) // Add animation here
+                    .animation(.easeInOut(duration: 0.3))
 
-                VStack(spacing: 10) {
+                VStack(alignment: .leading, spacing: 10) {
                     Button("Take Quiz") {
                         // Add action for Button 1
                     }
@@ -48,6 +48,7 @@ struct NavBar: View {
                     }
                 }
                 .foregroundColor(.white)
+                .padding(.leading,20)
             }
         }
     }
