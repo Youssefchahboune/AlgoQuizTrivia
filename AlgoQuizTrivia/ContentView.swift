@@ -42,10 +42,10 @@ struct NavBar: View {
                         VStack(alignment: .leading, spacing: 10) {
                             Button("Quiz") {
                                 page = "quizpage"
-                            }
+                            }.fontWeight(.heavy)
                             Button("Results") {
                                 page = "resultpage"
-                            }
+                            }.fontWeight(.heavy)
                         }.foregroundColor(.white)
                             .padding(.leading,20)
                             .opacity(isMenuVisible ? 1.0 : 0.0)
@@ -63,12 +63,14 @@ struct ContentView: View {
     var body: some View {
         
         ZStack(alignment: .center){
-            LinearGradient(gradient: Gradient(colors: [Color.blue,Color.white]), startPoint: .top, endPoint: .center).zIndex(0)
+//            LinearGradient(gradient: Gradient(colors: [Color.purple,Color.white]), startPoint: .top, endPoint: .center).zIndex(0)
             
-            VStack(alignment: .leading,spacing: 0){
+            VStack(alignment: .center,spacing: 0){
                 NavBar(page : $page)
                 if page == "quizpage"{
                     QuizPage(page: $page)
+                }else if page == "quizsettings"{
+                    QuizSettingsPage(page: $page)
                 } else if page == "resultpage" {
                     ResultsPage()
                 }
@@ -98,18 +100,21 @@ struct QuizPage: View {
                     .animation(Animation.easeOut(duration: 0.5).delay(0.05))
                 
                 Text("AlgoQuiz is your gateway to testing your knowledge across a wide range of technologies and topics.")
-                    .padding(.vertical)
+                    .fontWeight(.light)
+                    .padding(.top,40)
                     .padding(.horizontal)
                     .multilineTextAlignment(.center)
                     .animation(Animation.easeOut(duration: 0.5).delay(0.1))
             
                 VStack {
-                    Button("Ready") {}.frame(width: 150, height: 50)
+                    Button("Ready") {
+                        page = "quizsettings"
+                    }.frame(width: 150, height: 50)
                         .background(Color.blue)
                         .foregroundColor(.white)
                         .cornerRadius(50)
                         .fontWeight(.black)
-                        .padding(.vertical,30)
+                        .padding(.vertical,40)
                         .animation(Animation.easeOut(duration: 0.5).delay(0.15))
                         .shadow(radius: 5)
                 }
@@ -125,14 +130,99 @@ struct QuizPage: View {
 }
 
 
-struct ResultsPage : View {
+struct QuizSettingsPage : View {
+    @Binding var page : String
+    
+    @State private var selectedTopic = 0
+        let topicOptions = ["HTML", "Java", "JavaScript"]
+    
+    @State private var selectedNumberOfQuestion = 0
+        let numberOfQuestionsOptions = ["5", "10", "15","20"]
+    
+    @State private var selectedDifficulty = 0
+        let difficultyOptions = ["Easy", "Medium", "Hard"]
+    
+    @State private var selectedTime = 0
+        let timeOptions = ["5", "10","15","20"]
+    
     var body: some View {
         
+        VStack(alignment: .leading) {
+            Text("Quiz Settings ⚙️").fontWeight(.black).font(.system(size: 40)).multilineTextAlignment(.center).padding(.top,50).foregroundColor(.blue).animation(Animation.easeOut(duration: 0.5).delay(0))
+            
+            HStack {
+                
+                Text("Topic :").fontWeight(.black)
+                
+                Picker("Select an Option", selection: $selectedTopic) {
+                                        ForEach(0..<topicOptions.count, id: \.self) { index in
+                                            Text(topicOptions[index]).tag(index)
+                                        }
+                                    }
+                .pickerStyle(MenuPickerStyle()).background(.white).cornerRadius(5).shadow(radius: 1)
+
+            }.padding(.top,20).animation(Animation.easeOut(duration: 0.5).delay(0.05))
+            
+            HStack {
+                
+                Text("Number of Questions :").fontWeight(.black)
+                
+                Picker("Select an Option", selection: $selectedNumberOfQuestion) {
+                                        ForEach(0..<numberOfQuestionsOptions.count, id: \.self) { index in
+                                            Text(numberOfQuestionsOptions[index]).tag(index)
+                                        }
+                                    }
+                .pickerStyle(MenuPickerStyle()).background(.white).cornerRadius(5).shadow(radius: 1)
+
+            }.padding(.top,20).animation(Animation.easeOut(duration: 0.5).delay(0.1))
+            
+            HStack {
+                
+                Text("Difficulty :").fontWeight(.black)
+                
+                Picker("Select an Option", selection: $selectedDifficulty) {
+                                        ForEach(0..<difficultyOptions.count, id: \.self) { index in
+                                            Text(difficultyOptions[index]).tag(index)
+                                        }
+                                    }
+                .pickerStyle(MenuPickerStyle()).background(.white).cornerRadius(5).shadow(radius: 1)
+
+            }.padding(.top,20).animation(Animation.easeOut(duration: 0.5).delay(0.15))
+            
+            HStack {
+                
+                Text("Timer :").fontWeight(.black)
+                
+                Picker("Select an Option", selection: $selectedTime) {
+                                        ForEach(0..<timeOptions.count, id: \.self) { index in
+                                            Text(timeOptions[index]).tag(index)
+                                        }
+                                    }
+                .pickerStyle(MenuPickerStyle()).background(.white).cornerRadius(5).shadow(radius: 1)
+
+            }.padding(.top,20).animation(Animation.easeOut(duration: 0.5).delay(0.2))
+            
+            Button("Start Quiz"){}.frame(width: 150, height: 50)
+                .background(Color.blue)
+                .foregroundColor(.white)
+                .cornerRadius(50)
+                .fontWeight(.black)
+                .padding(.vertical,40)
+                .animation(Animation.easeOut(duration: 0.5).delay(0.25))
+                .shadow(radius: 5)
+        }
+    }
+}
+
+
+struct ResultsPage : View {
+    var body: some View {
         VStack {
             Text("Result page").fontWeight(.black).font(.system(size: 40))
         }.padding(.leading,20)
     }
 }
+
 
 
 
