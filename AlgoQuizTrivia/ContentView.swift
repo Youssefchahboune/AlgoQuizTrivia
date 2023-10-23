@@ -7,6 +7,78 @@
 
 import SwiftUI
 
+struct Question{
+    var questionNum: Int
+    var questionText: String
+    var answer : String
+    var options : [String]
+}
+
+struct QuestionView : View {
+    
+    var question : Question
+    
+    var body: some View {
+        VStack {
+            ZStack {
+                Rectangle()
+                    .frame(width: 300, height: 200)
+                    .foregroundColor(.white)
+                    .cornerRadius(10)
+                    .shadow(radius: 3)
+
+                Text("\(question.questionNum). " + question.questionText)
+                    .foregroundColor(.black)
+                    .font(.headline)
+            }.padding(.bottom,10)
+            
+            ForEach(question.options, id: \.self) { option in
+                Button(option){
+                    
+                }
+                .frame(width: 300, height: 50)
+                .background(.white)
+                .border(.gray)
+                .cornerRadius(3)
+                .padding(.vertical,10)
+            }
+        }
+        
+    
+    }
+    
+    
+}
+
+struct Quiz {
+    var quizName:String = ""
+    var questions : [Question] = []
+    var topic : String = ""
+    var difficulty : String = ""
+    var Timer : String = ""
+    var DateAndTime : Date = Date()
+}
+
+class QuizViewModel : ObservableObject {
+
+    @Published var quiz: Quiz
+    @Published var currentQuestionIndex: Int = 0
+
+        init() {
+            quiz = Quiz(quizName: "Sample Quiz", questions: [
+                Question(questionNum: 1, questionText: "What is Java", answer: "option3", options: ["option1", "option2", "option3"]),
+                Question(questionNum: 2, questionText: "What is Javascript", answer: "option3", options: ["option1", "option2", "option3"])
+            ])
+        }
+    
+    func Next() {
+        if currentQuestionIndex+1 < quiz.questions.count {
+            currentQuestionIndex += 1
+        }
+    }
+    
+}
+
 struct NavBar: View {
     @Binding var page: String
     @State private var isMenuVisible = false
@@ -71,6 +143,8 @@ struct ContentView: View {
                     QuizPage(page: $page)
                 }else if page == "quizsettings"{
                     QuizSettingsPage(page: $page)
+                } else if page == "startquiz" {
+                    QuizStart()
                 } else if page == "resultpage" {
                     ResultsPage()
                 }
@@ -91,7 +165,7 @@ struct QuizPage: View {
                     .padding(.vertical, 20)
                     .animation(Animation.easeOut(duration: 0.5))
                 
-                Text("AlgoQuiz App")
+                Text("AlgoQuiz Trivia")
                     .padding(.horizontal)
                     .foregroundColor(.blue)
                     .fontWeight(.black)
@@ -202,7 +276,9 @@ struct QuizSettingsPage : View {
 
             }.padding(.top,20).animation(Animation.easeOut(duration: 0.5).delay(0.2))
             
-            Button("Start Quiz"){}.frame(width: 150, height: 50)
+            Button("Start Quiz"){
+                page = "startquiz"
+            }.frame(width: 150, height: 50)
                 .background(Color.blue)
                 .foregroundColor(.white)
                 .cornerRadius(50)
@@ -210,6 +286,48 @@ struct QuizSettingsPage : View {
                 .padding(.vertical,40)
                 .animation(Animation.easeOut(duration: 0.5).delay(0.25))
                 .shadow(radius: 5)
+        }
+    }
+}
+
+struct QuizStart : View {
+    
+    @ObservedObject var QVM : QuizViewModel = QuizViewModel()
+    
+    var body: some View {
+        
+        VStack {
+            Text("\(QVM.quiz.quizName)").padding(.top,30)
+            
+            
+            QuestionView(question: QVM.quiz.questions[QVM.currentQuestionIndex])
+            
+            if QVM.currentQuestionIndex+1 == QVM.quiz.questions.count{
+                
+                    Button("Finish Quiz"){
+                    
+                    }.frame(width: 150, height: 50)
+                    .background(Color.blue)
+                    .foregroundColor(.white)
+                    .cornerRadius(50)
+                    .fontWeight(.black)
+                    .padding(.vertical,40)
+                    .animation(Animation.easeOut(duration: 0.5).delay(0.15))
+                    .shadow(radius: 5)
+            } else {
+                
+                    Button("Next"){
+                        QVM.Next()
+                    }.frame(width: 150, height: 50)
+                    .background(Color.blue)
+                    .foregroundColor(.white)
+                    .cornerRadius(50)
+                    .fontWeight(.black)
+                    .padding(.vertical,40)
+                    .animation(Animation.easeOut(duration: 0.5).delay(0.15))
+                    .shadow(radius: 5)
+            }
+            
         }
     }
 }
