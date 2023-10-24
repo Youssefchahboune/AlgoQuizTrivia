@@ -59,7 +59,7 @@ struct Quiz {
     var topic : String = ""
     var difficulty : String = ""
     var Timer : String = ""
-    var grade : Double = 0.0
+    var grade : Int = 0
     var DateAndTime : Date = Date()
 }
 
@@ -81,6 +81,49 @@ class QuizViewModel : ObservableObject {
         }
     }
     
+}
+
+struct QuizResultModel : Hashable {
+    var quizName : String
+    var topic : String
+    var gradeInPercentage : Int
+    var gradeOutOfTotalNumberOfQuestion : String
+    var totalNumberOfQuestion : Int
+    var difficulty : String
+    // var Time : Double
+    var dateAndTime : Date
+}
+
+struct QuizResultView : View {
+    
+    var quizResult : QuizResultModel
+    
+    var body: some View {
+        VStack {
+            
+            Text(quizResult.quizName)
+        
+            Text("\(quizResult.gradeInPercentage)%")
+            Text("\(quizResult.gradeOutOfTotalNumberOfQuestion)")
+            Text("\(quizResult.topic)")
+            Text("\(quizResult.difficulty)")
+            Text("\(quizResult.dateAndTime.formatted())")
+    
+        }
+    }
+}
+
+class QuizResultViewModel : ObservableObject {
+    @Published var listOfResults : [QuizResultModel] = [QuizResultModel(quizName: "Test", topic: "test", gradeInPercentage: 0, gradeOutOfTotalNumberOfQuestion: "0/0", totalNumberOfQuestion: 0, difficulty: "Test", dateAndTime: Date()
+    )]
+    
+    
+    func SaveQuizResult(quiz:Quiz){
+        
+        let newQuizSaved = QuizResultModel(quizName: quiz.quizName,topic: quiz.topic, gradeInPercentage: quiz.grade, gradeOutOfTotalNumberOfQuestion: "\(0)/\(quiz.questions.count)", totalNumberOfQuestion: quiz.questions.count, difficulty: quiz.difficulty, dateAndTime: quiz.DateAndTime)
+        
+        listOfResults.append(newQuizSaved)
+    }
 }
 
 struct NavBar: View {
@@ -159,6 +202,7 @@ struct ContentView: View {
     @State var isQuizStarted : Bool = false
     
     @ObservedObject var QVM : QuizViewModel = QuizViewModel()
+    @ObservedObject var QRVM : QuizResultViewModel = QuizResultViewModel()
     
     var body: some View {
         
@@ -174,9 +218,9 @@ struct ContentView: View {
                 } else if page == "startquiz" {
                     QuizStart(isQuizStarted: $isQuizStarted,page: $page)
                 } else if page == "savequizpage"{
-                    SaveQuizResults(quiz: QVM.quiz, page: $page)
+                    SaveQuizResults(quiz: QVM.quiz, page: $page,QRVM: QRVM)
                 } else if page == "resultpage" {
-                    ResultsPage()
+                    ResultsPage(QRVM: QRVM)
                 }
             }.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading).zIndex(1)
         }
@@ -357,7 +401,7 @@ struct QuizStart : View {
             
             if QVM.currentQuestionIndex+1 == QVM.quiz.questions.count{
                 
-                    Button("Finish Quiz"){
+                    Button("Finish"){
                         // compute quize grade and set the quiz grade
                         isQuizStarted = false
                         page = "savequizpage"// go to save quiz page
@@ -395,6 +439,9 @@ struct SaveQuizResults : View {
     
     @State var quizName : String = ""
     
+    @ObservedObject var QRVM : QuizResultViewModel
+    
+    
     var body: some View {
         
         VStack(alignment: .leading) {
@@ -425,7 +472,14 @@ struct SaveQuizResults : View {
             
             
             HStack {
-                Button("Save Quiz"){}.frame(width: 150, height: 50)
+                Button("Save Quiz") {
+                    var updatedQuiz = quiz // Make a mutable copy of the quiz
+                    updatedQuiz.quizName = quizName // Update the quizName property
+                    
+                    QRVM.SaveQuizResult(quiz: updatedQuiz)
+                    print(QRVM.listOfResults.count)
+                    page = "quizpage"
+                }.frame(width: 150, height: 50)
                     .background(Color.blue)
                     .foregroundColor(.white)
                     .cornerRadius(50)
@@ -451,9 +505,17 @@ struct SaveQuizResults : View {
 
 
 struct ResultsPage : View {
+    
+    @ObservedObject var QRVM : QuizResultViewModel
+    
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             Text("Result page").fontWeight(.black).font(.system(size: 35)).multilineTextAlignment(.center).padding(.top,30).foregroundColor(.blue).animation(Animation.easeOut(duration: 0.5).delay(0))
+            
+            ForEach(QRVM.listOfResults, id: \.self) { quizResult in
+                QuizResultView(quizResult: quizResult)
+            }
+            
         }.padding(.top,30)
     }
 }
