@@ -56,10 +56,11 @@ struct QuestionView : View {
 struct Quiz {
     var quizName:String = ""
     var questions : [Question] = []
+    var numOfQuestion : Int = 0
     var topic : String = ""
     var difficulty : String = ""
     var Timer : String = ""
-    var grade : Double = 0.0
+    var grade : Int = 0
     var DateAndTime : Date = Date()
 }
 
@@ -81,6 +82,55 @@ class QuizViewModel : ObservableObject {
         }
     }
     
+}
+
+struct QuizResultModel : Hashable {
+    var id : UUID = UUID()
+    var quizName : String
+    var topic : String
+    var gradeInPercentage : Int
+    var gradeOutOfTotalNumberOfQuestion : String
+    var totalNumberOfQuestion : Int
+    var difficulty : String
+    // var Time : Double
+    var dateAndTime : Date
+}
+
+struct QuizResultView : View {
+    
+    var quizResult : QuizResultModel
+    
+    var body: some View {
+        VStack (alignment: .leading, spacing: 0) {
+            
+            HStack {
+                Text(quizResult.quizName).fontWeight(.black).foregroundColor(.blue)
+                Spacer()
+                Text("\(quizResult.gradeInPercentage)%").font(.system(size: 40)).fontWeight(.black).padding(.trailing,20)
+            }.padding(.horizontal)
+            
+            VStack(alignment: .leading, spacing: 0){
+                Text("Grade : \(quizResult.gradeOutOfTotalNumberOfQuestion)")
+                Text("Topic : \(quizResult.topic)")
+                Text("Difficulty : \(quizResult.difficulty)")
+            }.padding(.horizontal).padding(.bottom)
+            
+            Text("Date&Time : \(quizResult.dateAndTime.formatted())").padding(.horizontal).opacity(50)
+
+        }.frame(width: 300,height: 200).background(.white).shadow(radius: 1).padding(.bottom,20)
+    }
+}
+
+class QuizResultViewModel : ObservableObject {
+    @Published var listOfResults : [QuizResultModel] = [QuizResultModel(quizName: "Test 1", topic: "Java", gradeInPercentage: 100, gradeOutOfTotalNumberOfQuestion: "10/10", totalNumberOfQuestion: 10, difficulty: "Hard", dateAndTime: Date()),QuizResultModel(quizName: "Test 2", topic: "HTML", gradeInPercentage: 90, gradeOutOfTotalNumberOfQuestion: "18/20", totalNumberOfQuestion: 20, difficulty: "Medium", dateAndTime: Date())]
+    
+    
+    func SaveQuizResult(quiz:Quiz){
+        
+        let newQuizSaved = QuizResultModel(quizName: quiz.quizName,topic: quiz.topic, gradeInPercentage: quiz.grade, gradeOutOfTotalNumberOfQuestion: "\(0)/\(quiz.questions.count)", totalNumberOfQuestion: quiz.questions.count, difficulty: quiz.difficulty, dateAndTime: quiz.DateAndTime)
+        
+        listOfResults.append(newQuizSaved)
+    }
 }
 
 struct NavBar: View {
@@ -159,6 +209,7 @@ struct ContentView: View {
     @State var isQuizStarted : Bool = false
     
     @ObservedObject var QVM : QuizViewModel = QuizViewModel()
+    @ObservedObject var QRVM : QuizResultViewModel = QuizResultViewModel()
     
     var body: some View {
         
@@ -170,13 +221,13 @@ struct ContentView: View {
                 if page == "quizpage"{
                     QuizPage(page: $page)
                 }else if page == "quizsettings"{
-                    QuizSettingsPage(page: $page,isQuizStarted: $isQuizStarted)
+                    QuizSettingsPage(page: $page,isQuizStarted: $isQuizStarted, QVM: QVM)
                 } else if page == "startquiz" {
                     QuizStart(isQuizStarted: $isQuizStarted,page: $page)
                 } else if page == "savequizpage"{
-                    SaveQuizResults(quiz: QVM.quiz, page: $page)
+                    SaveQuizResults(quiz: QVM.quiz, page: $page,QRVM: QRVM)
                 } else if page == "resultpage" {
-                    ResultsPage()
+                    ResultsPage(QRVM: QRVM)
                 }
             }.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading).zIndex(1)
         }
@@ -211,7 +262,7 @@ struct QuizPage: View {
                     .animation(Animation.easeOut(duration: 0.5).delay(0.1))
             
                 VStack {
-                    Button("Ready") {
+                    Button("Take Quiz ❕") {
                         page = "quizsettings"
                     }.frame(width: 150, height: 50)
                         .background(Color.blue)
@@ -237,12 +288,13 @@ struct QuizPage: View {
 struct QuizSettingsPage : View {
     @Binding var page : String
     @Binding var isQuizStarted : Bool
+    @ObservedObject var QVM : QuizViewModel
     
     @State private var selectedTopic = 0
         let topicOptions = ["HTML", "Java", "JavaScript"]
     
     @State private var selectedNumberOfQuestion = 0
-        let numberOfQuestionsOptions = ["5", "10", "15","20"]
+        let numberOfQuestionsOptions = [5, 10, 15,20]
     
     @State private var selectedDifficulty = 0
         let difficultyOptions = ["Easy", "Medium", "Hard"]
@@ -274,7 +326,7 @@ struct QuizSettingsPage : View {
                 
                 Picker("Select an Option", selection: $selectedNumberOfQuestion) {
                                         ForEach(0..<numberOfQuestionsOptions.count, id: \.self) { index in
-                                            Text(numberOfQuestionsOptions[index]).tag(index)
+                                            Text("\(numberOfQuestionsOptions[index])").tag(index)
                                         }
                                     }
                 .pickerStyle(MenuPickerStyle()).background(.white).cornerRadius(5).shadow(radius: 1)
@@ -307,8 +359,11 @@ struct QuizSettingsPage : View {
 
             }.padding(.top,20).animation(Animation.easeOut(duration: 0.5).delay(0.2))
             
-            Button("Start Quiz"){
+            Button("Start Quiz ❕"){
                 page = "startquiz"
+                QVM.quiz.topic = topicOptions[selectedTopic]
+                QVM.quiz.difficulty = difficultyOptions[selectedDifficulty]
+                QVM.quiz.numOfQuestion = numberOfQuestionsOptions[selectedNumberOfQuestion]
                 isQuizStarted = true
             }.frame(width: 150, height: 50)
                 .background(Color.blue)
@@ -328,36 +383,34 @@ struct QuizStart : View {
     @Binding var isQuizStarted : Bool
     @Binding var page : String
     
-//    @State private var timeRemaining = 10 // Set your initial time in seconds
-//    @State private var timer: Timer? = nil
+    @State private var timeRemaining = 10 // Set your initial time in seconds
+    @State private var timer: Timer? = nil
     
     
     var body: some View {
         
         VStack(alignment: .center, spacing: 0) {
-            //Text("\(QVM.quiz.quizName)").padding(.top,30)
-            
-//            VStack {
-//                    Text("Timer : \(timeRemaining)")
-//                    .font(.title3)
-//                            .onAppear {
-//                                // Start the timer when the view appears
-//                                timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
-//                                    if timeRemaining > 0 {
-//                                        timeRemaining -= 1
-//                                    } else {
-//                                        timer?.invalidate()
-//                                        page = "savequizpage"
-//                                    }
-//                                }
-//                            }
-//            }.padding(.bottom)
+            VStack {
+                    Text("Timer ⏳ : \(timeRemaining)")
+                    .font(.title3)
+                            .onAppear {
+                                // Start the timer when the view appears
+                                timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
+                                    if timeRemaining > 0 {
+                                        timeRemaining -= 1
+                                    } else {
+                                        timer?.invalidate()
+                                        //page = "savequizpage"
+                                    }
+                                }
+                            }
+            }.padding(.bottom).padding(.top,10).padding(.bottom,10)
             
             QuestionView(question: QVM.quiz.questions[QVM.currentQuestionIndex])
             
             if QVM.currentQuestionIndex+1 == QVM.quiz.questions.count{
                 
-                    Button("Finish Quiz"){
+                    Button("Finish"){
                         // compute quize grade and set the quiz grade
                         isQuizStarted = false
                         page = "savequizpage"// go to save quiz page
@@ -395,17 +448,21 @@ struct SaveQuizResults : View {
     
     @State var quizName : String = ""
     
+    @ObservedObject var QRVM : QuizResultViewModel
+    
+    
     var body: some View {
         
-        VStack(alignment: .leading) {
-            Text("Save Quiz Results ?").fontWeight(.black).font(.system(size: 35)).multilineTextAlignment(.center).padding(.top,50).foregroundColor(.blue).animation(Animation.easeOut(duration: 0.5).delay(0))
+        VStack(alignment: .center) {
+            Text("Save Quiz Results ?").fontWeight(.black).font(.system(size: 35)).multilineTextAlignment(.center).padding(.top,50).foregroundColor(.blue).animation(Animation.easeOut(duration: 0.5).delay(0)).padding(.bottom,20)
             
-            Text("\(Int(quiz.grade))%").fontWeight(.black).padding(.top).font(.system(size: 50))
             
             HStack {
-                Text("Quiz Name :")
-                TextField("Simple Quiz", text: $quizName).frame(width: 200).background(.white).shadow(radius: 1)
-            }
+                TextField("Enter Quiz Name", text: $quizName).frame(width: 200).background(.white).shadow(radius: 1).multilineTextAlignment(.center)
+            }.padding(.bottom,10)
+            
+            Text("\(Int(quiz.grade))%").fontWeight(.black).padding(.top).font(.system(size: 50)).padding(.bottom,20)
+            
             HStack {
                 Text("Topic :")
                 Text("\(quiz.topic)")
@@ -415,8 +472,8 @@ struct SaveQuizResults : View {
                 Text("\(quiz.difficulty)")
             }
             HStack {
-                Text("Number Of Question :")
-                Text("\(quiz.questions.count)")
+                Text("Number Of Questions :")
+                Text("\(quiz.numOfQuestion)")
             }
             HStack {
                 Text("Date & Time :")
@@ -425,7 +482,14 @@ struct SaveQuizResults : View {
             
             
             HStack {
-                Button("Save Quiz"){}.frame(width: 150, height: 50)
+                Button("Save Quiz 💾") {
+                    var updatedQuiz = quiz // Make a mutable copy of the quiz
+                    updatedQuiz.quizName = quizName // Update the quizName property
+                    
+                    QRVM.SaveQuizResult(quiz: updatedQuiz)
+                    print(QRVM.listOfResults.count)
+                    page = "quizpage"
+                }.frame(width: 150, height: 50)
                     .background(Color.blue)
                     .foregroundColor(.white)
                     .cornerRadius(50)
@@ -434,7 +498,7 @@ struct SaveQuizResults : View {
                     .animation(Animation.easeOut(duration: 0.5).delay(0.15))
                     .shadow(radius: 1)
                 
-                Button("Don't Save"){
+                Button("Don't Save ❌"){
                     page = "quizpage"
                 }.frame(width: 150, height: 50)
                     .background(Color.blue)
@@ -445,16 +509,28 @@ struct SaveQuizResults : View {
                     .animation(Animation.easeOut(duration: 0.5).delay(0.15))
                     .shadow(radius: 1)
             }
-        }.padding(.top,20).padding(.leading)
+        }.padding(.top,20)
     }
 }
 
 
 struct ResultsPage : View {
+    
+    @ObservedObject var QRVM : QuizResultViewModel
+    
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            Text("Result page").fontWeight(.black).font(.system(size: 35)).multilineTextAlignment(.center).padding(.top,30).foregroundColor(.blue).animation(Animation.easeOut(duration: 0.5).delay(0))
-        }.padding(.top,30)
+            Text("Result page").fontWeight(.black).font(.system(size: 35)).multilineTextAlignment(.center).padding(.top,30).foregroundColor(.blue).padding(.bottom,20).padding(.leading,15)
+            
+            ScrollView {
+                VStack {
+                    ForEach(QRVM.listOfResults, id: \.self) { quizResult in
+                        QuizResultView(quizResult: quizResult).padding(.horizontal)
+                    }
+                }.padding(.top)
+            }
+            
+        }.padding(.top,30).frame(maxWidth: .infinity)
     }
 }
 
