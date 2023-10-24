@@ -30,24 +30,27 @@ struct QuestionView : View {
                 Text("\(question.questionNum). " + question.questionText)
                     .foregroundColor(.black)
                     .font(.headline)
-            }.padding(.bottom,10)
+            }.padding(.bottom,30)
             
             ForEach(question.options, id: \.self) { option in
-                Button(option){
+                
+                ZStack {
+                    Rectangle()
+                        .frame(width: 300, height: 50)
+                        .foregroundColor(.white)
+                        .padding(.vertical,5)
+                        .cornerRadius(10)
+                        .shadow(radius: 3)
+                    
+                    Button(option){
+                        
+                    }
+
                     
                 }
-                .frame(width: 300, height: 50)
-                .background(.white)
-                .border(.gray)
-                .cornerRadius(3)
-                .padding(.vertical,10)
             }
         }
-        
-    
     }
-    
-    
 }
 
 struct Quiz {
@@ -56,6 +59,7 @@ struct Quiz {
     var topic : String = ""
     var difficulty : String = ""
     var Timer : String = ""
+    var grade : Double = 0.0
     var DateAndTime : Date = Date()
 }
 
@@ -65,10 +69,10 @@ class QuizViewModel : ObservableObject {
     @Published var currentQuestionIndex: Int = 0
 
         init() {
-            quiz = Quiz(quizName: "Sample Quiz", questions: [
-                Question(questionNum: 1, questionText: "What is Java", answer: "option3", options: ["option1", "option2", "option3"]),
-                Question(questionNum: 2, questionText: "What is Javascript", answer: "option3", options: ["option1", "option2", "option3"])
-            ])
+            quiz = Quiz(quizName: "Sample Quiz",questions: [
+                Question(questionNum: 1, questionText: "What is Java", answer: "A Programming Language", options: ["A Cake", "A Programming Language", "A pet name"]),
+                Question(questionNum: 2, questionText: "Is a String an object ?", answer: "True", options: ["True", "False"])
+            ], topic: "Java", difficulty: "easy")
         }
     
     func Next() {
@@ -81,6 +85,7 @@ class QuizViewModel : ObservableObject {
 
 struct NavBar: View {
     @Binding var page: String
+    @Binding var isQuizStarted : Bool
     @State private var isMenuVisible = false
     @State private var menuHeight: CGFloat = 0.0
 
@@ -90,20 +95,23 @@ struct NavBar: View {
                 Text("AlgoQuiz").foregroundColor(.white).padding(.leading, 20).fontWeight(.black)
                 Spacer()
                 Button(action: {
-                    withAnimation {
-                        isMenuVisible.toggle()
-                        if isMenuVisible {
-                            menuHeight = 100.0
-                        } else {
-                            menuHeight = 0.0
+                        withAnimation {
+                            isMenuVisible.toggle()
+                            if isMenuVisible && isQuizStarted {
+                                menuHeight = 65.0
+                            } else if isMenuVisible {
+                                menuHeight = 100.0
+                            }
+                            else {
+                                menuHeight = 0.0
+                            }
                         }
+                    }) {
+                        Image("HamburgerIcon").resizable()
+                            .frame(width: 25, height: 25)
+                            .foregroundColor(.blue)
+                            .padding(.trailing, 20)
                     }
-                }) {
-                    Image("HamburgerIcon").resizable()
-                        .frame(width: 25, height: 25)
-                        .foregroundColor(.blue)
-                        .padding(.trailing, 20)
-                }
             }.frame(height: 70).background(Color.blue)
                 ZStack(alignment: .leading) {
                     Rectangle()
@@ -112,16 +120,32 @@ struct NavBar: View {
                         .animation(.easeInOut(duration: 0.4))
                     if isMenuVisible {
                         VStack(alignment: .leading, spacing: 10) {
-                            Button("Quiz") {
-                                page = "quizpage"
-                            }.fontWeight(.heavy)
-                            Button("Results") {
-                                page = "resultpage"
-                            }.fontWeight(.heavy)
+                            
+                            if !isQuizStarted {
+                                Button("Quiz") {
+                                    page = "quizpage"
+                                    isMenuVisible = false
+                                    menuHeight = 0.0
+                                }.fontWeight(.heavy)
+                                    .disabled(!isMenuVisible)
+                                Button("Results") {
+                                    page = "resultpage"
+                                    isMenuVisible = false
+                                    menuHeight = 0.0
+                                }.fontWeight(.heavy)
+                                .disabled(!isMenuVisible)
+                            } else {
+                                Button("Quit") {
+                                    page = "quizpage"
+                                    isQuizStarted = false
+                                    isMenuVisible = false
+                                    menuHeight = 0.0
+                                }.fontWeight(.heavy)
+                                .disabled(!isMenuVisible)
+                            }
                         }.foregroundColor(.white)
                             .padding(.leading,20)
                             .opacity(isMenuVisible ? 1.0 : 0.0)
-                            .disabled(!isMenuVisible)
                     }
                 }
         }
@@ -132,19 +156,25 @@ struct ContentView: View {
     
     @State var page = "quizpage"
     
+    @State var isQuizStarted : Bool = false
+    
+    @ObservedObject var QVM : QuizViewModel = QuizViewModel()
+    
     var body: some View {
         
         ZStack(alignment: .center){
 //            LinearGradient(gradient: Gradient(colors: [Color.purple,Color.white]), startPoint: .top, endPoint: .center).zIndex(0)
             
             VStack(alignment: .center,spacing: 0){
-                NavBar(page : $page)
+                NavBar(page : $page , isQuizStarted: $isQuizStarted)
                 if page == "quizpage"{
                     QuizPage(page: $page)
                 }else if page == "quizsettings"{
-                    QuizSettingsPage(page: $page)
+                    QuizSettingsPage(page: $page,isQuizStarted: $isQuizStarted)
                 } else if page == "startquiz" {
-                    QuizStart()
+                    QuizStart(isQuizStarted: $isQuizStarted,page: $page)
+                } else if page == "savequizpage"{
+                    SaveQuizResults(quiz: QVM.quiz, page: $page)
                 } else if page == "resultpage" {
                     ResultsPage()
                 }
@@ -206,6 +236,7 @@ struct QuizPage: View {
 
 struct QuizSettingsPage : View {
     @Binding var page : String
+    @Binding var isQuizStarted : Bool
     
     @State private var selectedTopic = 0
         let topicOptions = ["HTML", "Java", "JavaScript"]
@@ -278,6 +309,7 @@ struct QuizSettingsPage : View {
             
             Button("Start Quiz"){
                 page = "startquiz"
+                isQuizStarted = true
             }.frame(width: 150, height: 50)
                 .background(Color.blue)
                 .foregroundColor(.white)
@@ -293,25 +325,48 @@ struct QuizSettingsPage : View {
 struct QuizStart : View {
     
     @ObservedObject var QVM : QuizViewModel = QuizViewModel()
+    @Binding var isQuizStarted : Bool
+    @Binding var page : String
+    
+//    @State private var timeRemaining = 10 // Set your initial time in seconds
+//    @State private var timer: Timer? = nil
+    
     
     var body: some View {
         
-        VStack {
-            Text("\(QVM.quiz.quizName)").padding(.top,30)
+        VStack(alignment: .center, spacing: 0) {
+            //Text("\(QVM.quiz.quizName)").padding(.top,30)
             
+//            VStack {
+//                    Text("Timer : \(timeRemaining)")
+//                    .font(.title3)
+//                            .onAppear {
+//                                // Start the timer when the view appears
+//                                timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
+//                                    if timeRemaining > 0 {
+//                                        timeRemaining -= 1
+//                                    } else {
+//                                        timer?.invalidate()
+//                                        page = "savequizpage"
+//                                    }
+//                                }
+//                            }
+//            }.padding(.bottom)
             
             QuestionView(question: QVM.quiz.questions[QVM.currentQuestionIndex])
             
             if QVM.currentQuestionIndex+1 == QVM.quiz.questions.count{
                 
                     Button("Finish Quiz"){
-                    
+                        // compute quize grade and set the quiz grade
+                        isQuizStarted = false
+                        page = "savequizpage"// go to save quiz page
                     }.frame(width: 150, height: 50)
                     .background(Color.blue)
                     .foregroundColor(.white)
                     .cornerRadius(50)
                     .fontWeight(.black)
-                    .padding(.vertical,40)
+                    .padding(.vertical,30)
                     .animation(Animation.easeOut(duration: 0.5).delay(0.15))
                     .shadow(radius: 5)
             } else {
@@ -323,21 +378,83 @@ struct QuizStart : View {
                     .foregroundColor(.white)
                     .cornerRadius(50)
                     .fontWeight(.black)
-                    .padding(.vertical,40)
+                    .padding(.vertical,30)
                     .animation(Animation.easeOut(duration: 0.5).delay(0.15))
                     .shadow(radius: 5)
             }
             
-        }
+        }.padding(.top, 30)
+    }
+}
+
+struct SaveQuizResults : View {
+    
+    var quiz : Quiz
+    
+    @Binding var page : String
+    
+    @State var quizName : String = ""
+    
+    var body: some View {
+        
+        VStack(alignment: .leading) {
+            Text("Save Quiz Results ?").fontWeight(.black).font(.system(size: 35)).multilineTextAlignment(.center).padding(.top,50).foregroundColor(.blue).animation(Animation.easeOut(duration: 0.5).delay(0))
+            
+            Text("\(Int(quiz.grade))%").fontWeight(.black).padding(.top).font(.system(size: 50))
+            
+            HStack {
+                Text("Quiz Name :")
+                TextField("Simple Quiz", text: $quizName).frame(width: 200).background(.white).shadow(radius: 1)
+            }
+            HStack {
+                Text("Topic :")
+                Text("\(quiz.topic)")
+            }
+            HStack {
+                Text("Difficulty :")
+                Text("\(quiz.difficulty)")
+            }
+            HStack {
+                Text("Number Of Question :")
+                Text("\(quiz.questions.count)")
+            }
+            HStack {
+                Text("Date & Time :")
+                Text("\(quiz.DateAndTime.formatted())")
+            }
+            
+            
+            HStack {
+                Button("Save Quiz"){}.frame(width: 150, height: 50)
+                    .background(Color.blue)
+                    .foregroundColor(.white)
+                    .cornerRadius(50)
+                    .fontWeight(.black)
+                    .padding(.vertical,30)
+                    .animation(Animation.easeOut(duration: 0.5).delay(0.15))
+                    .shadow(radius: 1)
+                
+                Button("Don't Save"){
+                    page = "quizpage"
+                }.frame(width: 150, height: 50)
+                    .background(Color.blue)
+                    .foregroundColor(.white)
+                    .cornerRadius(50)
+                    .fontWeight(.black)
+                    .padding(.vertical,30)
+                    .animation(Animation.easeOut(duration: 0.5).delay(0.15))
+                    .shadow(radius: 1)
+            }
+        }.padding(.top,20).padding(.leading)
     }
 }
 
 
 struct ResultsPage : View {
     var body: some View {
-        VStack {
-            Text("Result page").fontWeight(.black).font(.system(size: 40))
-        }.padding(.leading,20)
+        VStack(alignment: .leading, spacing: 0) {
+            Text("Result page").fontWeight(.black).font(.system(size: 35)).multilineTextAlignment(.center).padding(.top,30).foregroundColor(.blue).animation(Animation.easeOut(duration: 0.5).delay(0))
+        }.padding(.top,30)
     }
 }
 
