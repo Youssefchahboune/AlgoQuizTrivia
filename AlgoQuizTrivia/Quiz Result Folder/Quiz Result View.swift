@@ -15,6 +15,16 @@ struct QuizResultView : View {
     var body: some View {
         VStack (alignment: .leading, spacing: 0) {
             
+            HStack(spacing: 0){
+                Spacer()
+                Button(action: {
+                    //
+                }, label: {
+                    Text("X").fontWeight(.black)
+                }).padding(.horizontal,14).padding(.vertical,10).background(.blue).foregroundColor(.white).cornerRadius(50)
+        
+            }.padding(.trailing,10)
+            
             HStack {
                 Text(quizResult.quizName).fontWeight(.black).foregroundColor(.blue)
                 Spacer()
@@ -30,6 +40,6 @@ struct QuizResultView : View {
             
             Text("Date&Time : \(quizResult.dateAndTime.formatted())").padding(.horizontal).opacity(50)
 
-        }.frame(width: 300,height: 200).background(.white).shadow(radius: 1).padding(.bottom,20)
+        }.frame(width: 300,height: 240).background(.white).shadow(radius: 1).padding(.bottom,20)
     }
 }

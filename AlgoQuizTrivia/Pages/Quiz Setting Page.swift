@@ -14,7 +14,7 @@ struct QuizSettingsPage : View {
     @ObservedObject var QVM : QuizViewModel
     
     @State private var selectedTopic = 0
-        let topicOptions = ["HTML", "JavaScript","Linux"]
+        let topicOptions = ["HTML", "JavaScript","Linux","Php","Docker","Devops","Kubernetes"]
     
     @State private var selectedNumberOfQuestion = 0
         let numberOfQuestionsOptions = [5, 10, 15,20]
@@ -71,7 +71,7 @@ struct QuizSettingsPage : View {
             
             HStack {
                 
-                Text("Timer :").fontWeight(.black)
+                Text("Timer (min) :").fontWeight(.black)
                 
                 Picker("Select an Option", selection: $selectedTime) {
                                         ForEach(0..<timeOptions.count, id: \.self) { index in

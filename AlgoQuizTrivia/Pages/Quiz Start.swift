@@ -35,6 +35,8 @@ struct QuizStart : View {
                         .onAppear {
                             // Start the timer when the view appears
                             
+                            ActualDisplayTime = "Loading..."
+                            
                             var t = 60 * timePicked
                             
                             timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in

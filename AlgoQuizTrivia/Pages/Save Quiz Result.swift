@@ -65,7 +65,13 @@ struct SaveQuizResults : View {
             HStack {
                 Button("Save Quiz 💾") {
                     var updatedQuiz = quiz // Make a mutable copy of the quiz
-                    updatedQuiz.quizName = quizName // Update the quizName property
+                    
+                    if(quizName == ""){
+                        updatedQuiz.quizName = "\(quiz.topic) Test"
+                    } else {
+                        updatedQuiz.quizName = quizName // Update the quizName property
+                    }
+                    
                     QRVM.SaveQuizResult(quiz: updatedQuiz)
                     page = "quizpage"
                 }.frame(width: 150, height: 50)
