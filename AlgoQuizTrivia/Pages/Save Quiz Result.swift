@@ -29,7 +29,7 @@ struct SaveQuizResults : View {
                 TextField("Enter Quiz Name", text: $quizName).frame(width: 200).background(.white).shadow(radius: 1).multilineTextAlignment(.center)
             }.padding(.bottom,10)
             
-            Text("\(Int(quiz.grade))%").fontWeight(.black).padding(.top).font(.system(size: 50)).padding(.bottom,20)
+            Text("\(Int((quiz.grade * 100 ) / quiz.numOfQuestion))%").fontWeight(.black).padding(.top).font(.system(size: 50)).padding(.bottom,20)
             
             HStack {
                 Text("Topic :")

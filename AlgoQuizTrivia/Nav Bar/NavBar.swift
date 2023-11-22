@@ -13,6 +13,7 @@ struct NavBar: View {
     @Binding var isQuizStarted : Bool
     @State private var isMenuVisible = false
     @State private var menuHeight: CGFloat = 0.0
+    @ObservedObject var QVM : QuizViewModel
 
     var body: some View {
         VStack(alignment: .leading,spacing: 0) {
@@ -51,6 +52,7 @@ struct NavBar: View {
                                     page = "quizpage"
                                     isMenuVisible = false
                                     menuHeight = 0.0
+                                    QVM.currentQuestionIndex = 0
                                 }.fontWeight(.heavy)
                                     .disabled(!isMenuVisible)
                                 Button("Results") {
@@ -65,6 +67,7 @@ struct NavBar: View {
                                     isQuizStarted = false
                                     isMenuVisible = false
                                     menuHeight = 0.0
+                                    QVM.AllQuestion = []
                                 }.fontWeight(.heavy)
                                 .disabled(!isMenuVisible)
                             }

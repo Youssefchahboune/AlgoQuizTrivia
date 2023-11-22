@@ -23,7 +23,7 @@ struct ContentView: View {
 //            LinearGradient(gradient: Gradient(colors: [Color.purple,Color.white]), startPoint: .top, endPoint: .center).zIndex(0)
             
             VStack(alignment: .center,spacing: 0){
-                NavBar(page : $page , isQuizStarted: $isQuizStarted)
+                NavBar(page : $page , isQuizStarted: $isQuizStarted, QVM : QVM)
                 if page == "quizpage"{
                     QuizPage(page: $page)
                 }else if page == "quizsettings"{

@@ -14,6 +14,7 @@ class QuizViewModel : ObservableObject {
     @Published var quiz: Quiz = Quiz()
     @Published var currentQuestionIndex: Int = 0
     @Published var AllQuestion : [ApiQuestion] = []
+    @Published var QuestionAnswered : Bool = false
 
 
     
@@ -25,7 +26,7 @@ class QuizViewModel : ObservableObject {
     
     func getQuiz() {
             // Define the URL for the API
-            guard let url = URL(string: "https://quizapi.io/api/v1/questions?apiKey=99mUnElLvURJWSmEVzKMxbg15LILCH8ytt4Q9IUa&difficulty=easy&limit=10&tags=linux") else {
+        guard let url = URL(string: "https://quizapi.io/api/v1/questions?apiKey=99mUnElLvURJWSmEVzKMxbg15LILCH8ytt4Q9IUa&difficulty=\(quiz.difficulty)&limit=\(quiz.numOfQuestion)&tags=\(quiz.topic)") else {
                 // Handle URL creation error
                 return
             }
@@ -44,6 +45,7 @@ class QuizViewModel : ObservableObject {
                         // Update the @Published property on the main thread
                         DispatchQueue.main.async {
                             self.AllQuestion = Array(questions)
+                            print(self.AllQuestion.count)
                         }
                     } catch {
                         // Handle JSON decoding error

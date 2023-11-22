@@ -16,10 +16,10 @@ struct ApiQuestion : Codable {
 }
 
 struct AnswerChoice : Codable {
-    var answer_a : String = ""
-    var answer_b : String = ""
-    var answer_c : String = ""
-    var answer_d : String = ""
+    var answer_a : String?
+    var answer_b : String?
+    var answer_c : String?
+    var answer_d : String?
 }
 
 struct CorrectAnswer : Codable {

@@ -22,8 +22,9 @@ struct QuizStart : View {
         
         if !QVM.AllQuestion.isEmpty{
             
-            VStack(alignment: .center, spacing: 0) {
-                VStack {
+        // Timer
+            VStack(alignment: .leading,spacing: 0) {
+                HStack {
                     Text("Timer ⏳ : \(timeRemaining)")
                         .font(.title3)
                         .onAppear {
@@ -37,15 +38,25 @@ struct QuizStart : View {
                                 }
                             }
                         }
-                }.padding(.bottom).padding(.top,10).padding(.bottom,10)
+                    
+                    Spacer()
+                    
+                    Text("Topic : \(QVM.quiz.topic)").font(.title3)
+                }.padding(.top,10).padding(.bottom,10)
                 
-                QuestionView(question: QVM.AllQuestion[QVM.currentQuestionIndex])
+                Text("Score: \(QVM.quiz.grade)/\(QVM.AllQuestion.count)").font(.title3).padding(.bottom,30)
                 
+        // Question View
+                QuestionView(question: QVM.AllQuestion[QVM.currentQuestionIndex], QVM : QVM)
+            
+        // buttons Finish, Previous & Next
                 if QVM.currentQuestionIndex+1 == QVM.AllQuestion.count{
                     
                     Button("Finish"){
                         // compute quize grade and set the quiz grade
                         isQuizStarted = false
+                        QVM.AllQuestion = []
+                        QVM.currentQuestionIndex = 0
                         page = "savequizpage"// go to save quiz page
                     }.frame(width: 150, height: 50)
                         .background(Color.blue)
@@ -53,10 +64,9 @@ struct QuizStart : View {
                         .cornerRadius(50)
                         .fontWeight(.black)
                         .padding(.vertical,30)
-                        .animation(Animation.easeOut(duration: 0.5).delay(0.15))
                         .shadow(radius: 5)
-                } else {
                     
+                } else {
                     Button("Next"){
                         QVM.Next()
                     }.frame(width: 150, height: 50)
@@ -65,13 +75,13 @@ struct QuizStart : View {
                         .cornerRadius(50)
                         .fontWeight(.black)
                         .padding(.vertical,30)
-                        .animation(Animation.easeOut(duration: 0.5).delay(0.15))
                         .shadow(radius: 5)
+                    
                 }
                 
-            }.padding(.top, 30)
+            }.padding(.top, 30).padding(.horizontal, 10)
         } else {
-            Text("Loading Questions... ")
+            Text("Loading Questions... ").padding(.top, 30)
         }
     }
 }
