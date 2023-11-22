@@ -10,7 +10,6 @@ import SwiftUI
 
 struct Quiz {
     var quizName:String = ""
-    var questions : [Question] = []
     var numOfQuestion : Int = 0
     var topic : String = ""
     var difficulty : String = ""

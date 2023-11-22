@@ -14,7 +14,7 @@ class QuizResultViewModel : ObservableObject {
     
     func SaveQuizResult(quiz:Quiz){
         
-        let newQuizSaved = QuizResultModel(quizName: quiz.quizName,topic: quiz.topic, gradeInPercentage: quiz.grade, gradeOutOfTotalNumberOfQuestion: "\(0)/\(quiz.questions.count)", totalNumberOfQuestion: quiz.questions.count, difficulty: quiz.difficulty, dateAndTime: quiz.DateAndTime)
+        let newQuizSaved = QuizResultModel(quizName: quiz.quizName,topic: quiz.topic, gradeInPercentage: quiz.grade, gradeOutOfTotalNumberOfQuestion: "\(0)/\(quiz.numOfQuestion)", totalNumberOfQuestion: quiz.numOfQuestion, difficulty: quiz.difficulty, dateAndTime: quiz.DateAndTime)
         
         listOfResults.append(newQuizSaved)
     }

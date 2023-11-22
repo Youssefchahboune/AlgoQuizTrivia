@@ -10,7 +10,7 @@ import SwiftUI
 
 struct QuestionView : View {
     
-    var question : Question
+    var question : ApiQuestion
     
     var body: some View {
         VStack {
@@ -20,14 +20,13 @@ struct QuestionView : View {
                     .foregroundColor(.white)
                     .cornerRadius(10)
                     .shadow(radius: 3)
-
-                Text("\(question.questionNum). " + question.questionText)
+                
+                Text("N. " + question.question)
                     .foregroundColor(.black)
                     .font(.headline)
             }.padding(.bottom,30)
             
-            ForEach(question.options, id: \.self) { option in
-                
+            if(question.answers.answer_a != "null"){
                 ZStack {
                     Rectangle()
                         .frame(width: 300, height: 50)
@@ -36,13 +35,58 @@ struct QuestionView : View {
                         .cornerRadius(10)
                         .shadow(radius: 3)
                     
-                    Button(option){
+                    Button(question.answers.answer_a){
                         
                     }
-
-                    
                 }
             }
+            
+            if(question.answers.answer_b != "null"){
+                ZStack {
+                    Rectangle()
+                        .frame(width: 300, height: 50)
+                        .foregroundColor(.white)
+                        .padding(.vertical,5)
+                        .cornerRadius(10)
+                        .shadow(radius: 3)
+                    
+                    Button(question.answers.answer_b){
+                        
+                    }
+                }
+            }
+            
+            if(question.answers.answer_c != "null"){
+                ZStack {
+                    Rectangle()
+                        .frame(width: 300, height: 50)
+                        .foregroundColor(.white)
+                        .padding(.vertical,5)
+                        .cornerRadius(10)
+                        .shadow(radius: 3)
+                    
+                    Button(question.answers.answer_c){
+                        
+                    }
+                }
+            }
+            
+            if(question.answers.answer_d != "null"){
+                ZStack {
+                    Rectangle()
+                        .frame(width: 300, height: 50)
+                        .foregroundColor(.white)
+                        .padding(.vertical,5)
+                        .cornerRadius(10)
+                        .shadow(radius: 3)
+                    
+                    Button(question.answers.answer_d){
+                        
+                    }
+                }
+            }
+            
         }
     }
 }
+

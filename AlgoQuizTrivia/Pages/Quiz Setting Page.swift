@@ -14,7 +14,7 @@ struct QuizSettingsPage : View {
     @ObservedObject var QVM : QuizViewModel
     
     @State private var selectedTopic = 0
-        let topicOptions = ["HTML", "Python", "JavaScript","Linux"]
+        let topicOptions = ["HTML", "JavaScript","Linux"]
     
     @State private var selectedNumberOfQuestion = 0
         let numberOfQuestionsOptions = [5, 10, 15,20]
@@ -88,6 +88,7 @@ struct QuizSettingsPage : View {
                 QVM.quiz.difficulty = difficultyOptions[selectedDifficulty]
                 QVM.quiz.numOfQuestion = numberOfQuestionsOptions[selectedNumberOfQuestion]
                 isQuizStarted = true
+                QVM.getQuiz()
             }.frame(width: 150, height: 50)
                 .background(Color.blue)
                 .foregroundColor(.white)

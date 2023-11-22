@@ -8,27 +8,49 @@
 import Foundation
 import SwiftUI
 
-// api to use -> Quizapi.io
-// basic api call -> https://quizapi.io/api/v1/questions?apiKey=99mUnElLvURJWSmEVzKMxbg15LILCH8ytt4Q9IUa
-
-// basic api call with topic & difficulty -> https://quizapi.io/api/v1/questions?apiKey=99mUnElLvURJWSmEVzKMxbg15LILCH8ytt4Q9IUa&difficulty=easy&limit=10&tags=python
 
 class QuizViewModel : ObservableObject {
 
-    @Published var quiz: Quiz
+    @Published var quiz: Quiz = Quiz()
     @Published var currentQuestionIndex: Int = 0
+    @Published var AllQuestion : [ApiQuestion] = []
 
-        init() {
-            quiz = Quiz(quizName: "Sample Quiz",questions: [
-                Question(questionNum: 1, questionText: "What is Java", answer: "A Programming Language", options: ["A Cake", "A Programming Language", "A pet name"]),
-                Question(questionNum: 2, questionText: "Is a String an object ?", answer: "True", options: ["True", "False"])
-            ], topic: "Java", difficulty: "easy")
-        }
+
     
     func Next() {
-        if currentQuestionIndex+1 < quiz.questions.count {
+        if currentQuestionIndex+1 < AllQuestion.count {
             currentQuestionIndex += 1
         }
     }
+    
+    func getQuiz() {
+            // Define the URL for the API
+            guard let url = URL(string: "https://quizapi.io/api/v1/questions?apiKey=99mUnElLvURJWSmEVzKMxbg15LILCH8ytt4Q9IUa&difficulty=easy&limit=10&tags=linux") else {
+                // Handle URL creation error
+                return
+            }
+            
+            // Create a URLSession data task to fetch data from the API
+            URLSession.shared.dataTask(with: url) { (data, response, error) in
+                if let error = error {
+                    // Handle network error
+                    print("Error: \(error.localizedDescription)")
+                } else if let data = data {
+                    do {
+                        // Parse the JSON data into an array of Hero objects
+                        let decoder = JSONDecoder()
+                        let questions = try decoder.decode([ApiQuestion].self, from: data)
+                        
+                        // Update the @Published property on the main thread
+                        DispatchQueue.main.async {
+                            self.AllQuestion = Array(questions)
+                        }
+                    } catch {
+                        // Handle JSON decoding error
+                        print("JSON decoding error: \(error)")
+                    }
+                }
+            }.resume()
+        }
     
 }
