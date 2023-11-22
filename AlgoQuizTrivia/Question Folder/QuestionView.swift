@@ -26,13 +26,15 @@ struct QuestionView : View {
                 Button(action: {
                     if(question.correct_answers.answer_a_correct == "true"){
                         QVM.quiz.grade += 1
+                        print(QVM.quiz.grade)
                     }
+                    QVM.QuestionAnswered = false
                 }) {
                     Label (
                         title: { Text("A : \(question.answers.answer_a ?? "Error")") },
                         icon: { Image(systemName: "hand.tap.fill") }
                     )
-                }.padding(.bottom,10)
+                }.padding(.bottom,10).disabled(!QVM.QuestionAnswered)
             }
             
             if(question.answers.answer_b != nil){
@@ -40,13 +42,15 @@ struct QuestionView : View {
                 Button(action: {
                     if(question.correct_answers.answer_b_correct == "true"){
                         QVM.quiz.grade += 1
+                        print(QVM.quiz.grade)
                     }
+                    QVM.QuestionAnswered = false
                 }) {
                     Label (
                         title: { Text("B : \(question.answers.answer_b ?? "Error")") },
                         icon: { Image(systemName: "hand.tap.fill") }
                     )
-                }.padding(.bottom,10)
+                }.padding(.bottom,10).disabled(!QVM.QuestionAnswered)
             }
             
             if(question.answers.answer_c != nil){
@@ -54,13 +58,15 @@ struct QuestionView : View {
                 Button(action: {
                     if(question.correct_answers.answer_c_correct == "true"){
                         QVM.quiz.grade += 1
+                        print(QVM.quiz.grade)
                     }
+                    QVM.QuestionAnswered = false
                 }) {
                     Label (
                         title: { Text("C : \(question.answers.answer_c ?? "Error")") },
                         icon: { Image(systemName: "hand.tap.fill") }
                     )
-                }.padding(.bottom,10)
+                }.padding(.bottom,10).disabled(!QVM.QuestionAnswered)
             }
             
             if(question.answers.answer_d != nil){
@@ -68,13 +74,15 @@ struct QuestionView : View {
                 Button(action: {
                     if(question.correct_answers.answer_d_correct == "true"){
                         QVM.quiz.grade += 1
+                        print(QVM.quiz.grade)
                     }
+                    QVM.QuestionAnswered = false
                 }) {
                     Label (
                         title: { Text("D : \(question.answers.answer_d ?? "Error")") },
                         icon: { Image(systemName: "hand.tap.fill") }
                     )
-                }.padding(.bottom,10)
+                }.padding(.bottom,10).disabled(!QVM.QuestionAnswered)
             }
             
             

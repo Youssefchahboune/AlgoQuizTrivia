@@ -23,7 +23,7 @@ struct QuizSettingsPage : View {
         let difficultyOptions = ["Easy", "Medium", "Hard"]
     
     @State private var selectedTime = 0
-        let timeOptions = ["5", "10","15","20"]
+        let timeOptions = ["1","3","5","10","15","20"]
     
     var body: some View {
         
@@ -84,9 +84,11 @@ struct QuizSettingsPage : View {
             
             Button("Start Quiz ❕"){
                 page = "startquiz"
+                QVM.quiz = Quiz()
                 QVM.quiz.topic = topicOptions[selectedTopic]
                 QVM.quiz.difficulty = difficultyOptions[selectedDifficulty]
                 QVM.quiz.numOfQuestion = numberOfQuestionsOptions[selectedNumberOfQuestion]
+                QVM.quiz.Timer = Int(timeOptions[selectedTime]) ?? 0
                 isQuizStarted = true
                 QVM.getQuiz()
             }.frame(width: 150, height: 50)

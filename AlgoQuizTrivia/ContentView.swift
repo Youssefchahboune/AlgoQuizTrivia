@@ -29,7 +29,7 @@ struct ContentView: View {
                 }else if page == "quizsettings"{
                     QuizSettingsPage(page: $page,isQuizStarted: $isQuizStarted, QVM: QVM)
                 } else if page == "startquiz" {
-                    QuizStart(QVM: QVM, isQuizStarted: $isQuizStarted,page: $page)
+                    QuizStart(QVM: QVM, isQuizStarted: $isQuizStarted,page: $page, timePicked: QVM.quiz.Timer)
                 } else if page == "savequizpage"{
                     SaveQuizResults(quiz: QVM.quiz, page: $page,QRVM: QRVM)
                 } else if page == "resultpage" {

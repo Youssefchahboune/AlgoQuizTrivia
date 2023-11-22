@@ -68,6 +68,7 @@ struct NavBar: View {
                                     isMenuVisible = false
                                     menuHeight = 0.0
                                     QVM.AllQuestion = []
+                                    QVM.timer?.invalidate()
                                 }.fontWeight(.heavy)
                                 .disabled(!isMenuVisible)
                             }

@@ -16,6 +16,6 @@ struct QuizResultModel : Hashable {
     var gradeOutOfTotalNumberOfQuestion : String
     var totalNumberOfQuestion : Int
     var difficulty : String
-    // var Time : Double
+    var TimeLeft : String
     var dateAndTime : Date
 }

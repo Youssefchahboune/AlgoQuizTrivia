@@ -25,6 +25,7 @@ struct QuizResultView : View {
                 Text("Grade : \(quizResult.gradeOutOfTotalNumberOfQuestion)")
                 Text("Topic : \(quizResult.topic)")
                 Text("Difficulty : \(quizResult.difficulty)")
+                Text("Time Left : \(quizResult.TimeLeft)")
             }.padding(.horizontal).padding(.bottom)
             
             Text("Date&Time : \(quizResult.dateAndTime.formatted())").padding(.horizontal).opacity(50)

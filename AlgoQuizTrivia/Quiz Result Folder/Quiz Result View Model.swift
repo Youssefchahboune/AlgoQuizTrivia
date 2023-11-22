@@ -9,12 +9,12 @@ import Foundation
 import SwiftUI
 
 class QuizResultViewModel : ObservableObject {
-    @Published var listOfResults : [QuizResultModel] = [QuizResultModel(quizName: "Test 1", topic: "Java", gradeInPercentage: 100, gradeOutOfTotalNumberOfQuestion: "10/10", totalNumberOfQuestion: 10, difficulty: "Hard", dateAndTime: Date()),QuizResultModel(quizName: "Test 2", topic: "HTML", gradeInPercentage: 90, gradeOutOfTotalNumberOfQuestion: "18/20", totalNumberOfQuestion: 20, difficulty: "Medium", dateAndTime: Date())]
+    @Published var listOfResults : [QuizResultModel] = [QuizResultModel(quizName: "Test 1", topic: "JavaScript", gradeInPercentage: 100, gradeOutOfTotalNumberOfQuestion: "10/10", totalNumberOfQuestion: 10, difficulty: "Hard", TimeLeft: "00:00", dateAndTime: Date()),QuizResultModel(quizName: "Test 2", topic: "HTML", gradeInPercentage: 90, gradeOutOfTotalNumberOfQuestion: "18/20", totalNumberOfQuestion: 20, difficulty: "Medium", TimeLeft: "00:00", dateAndTime: Date())]
     
     
     func SaveQuizResult(quiz:Quiz){
         
-        let newQuizSaved = QuizResultModel(quizName: quiz.quizName,topic: quiz.topic, gradeInPercentage: ((quiz.grade * 100 ) / quiz.numOfQuestion), gradeOutOfTotalNumberOfQuestion: "\(quiz.grade)/\(quiz.numOfQuestion)", totalNumberOfQuestion: quiz.numOfQuestion, difficulty: quiz.difficulty, dateAndTime: quiz.DateAndTime)
+        let newQuizSaved = QuizResultModel(quizName: quiz.quizName,topic: quiz.topic, gradeInPercentage: ((quiz.grade * 100 ) / quiz.numOfQuestion), gradeOutOfTotalNumberOfQuestion: "\(quiz.grade)/\(quiz.numOfQuestion)", totalNumberOfQuestion: quiz.numOfQuestion, difficulty: quiz.difficulty, TimeLeft: quiz.timerString, dateAndTime: quiz.DateAndTime)
         
         listOfResults.append(newQuizSaved)
     }

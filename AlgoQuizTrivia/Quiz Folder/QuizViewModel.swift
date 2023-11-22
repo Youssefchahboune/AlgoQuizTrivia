@@ -14,7 +14,8 @@ class QuizViewModel : ObservableObject {
     @Published var quiz: Quiz = Quiz()
     @Published var currentQuestionIndex: Int = 0
     @Published var AllQuestion : [ApiQuestion] = []
-    @Published var QuestionAnswered : Bool = false
+    @Published var QuestionAnswered : Bool = true
+    @Published var timer : Timer? = nil
 
 
     

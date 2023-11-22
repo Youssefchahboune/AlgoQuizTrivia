@@ -29,22 +29,35 @@ struct SaveQuizResults : View {
                 TextField("Enter Quiz Name", text: $quizName).frame(width: 200).background(.white).shadow(radius: 1).multilineTextAlignment(.center)
             }.padding(.bottom,10)
             
-            Text("\(Int((quiz.grade * 100 ) / quiz.numOfQuestion))%").fontWeight(.black).padding(.top).font(.system(size: 50)).padding(.bottom,20)
+            if quiz.numOfQuestion != 0 {
+                let percentage = Int((quiz.grade * 100) / quiz.numOfQuestion)
+                Text("\(percentage)%").fontWeight(.black).padding(.top).font(.system(size: 50)).padding(.bottom, 20)
+            } else {
+                Text("N/A").fontWeight(.black).padding(.top).font(.system(size: 50)).padding(.bottom, 20)
+            }
             
             HStack {
-                Text("Topic :")
+                Text("Topic : ")
                 Text("\(quiz.topic)")
             }
             HStack {
-                Text("Difficulty :")
+                Text("Difficulty : ")
                 Text("\(quiz.difficulty)")
             }
             HStack {
-                Text("Number Of Questions :")
+                Text("Score : ")
+                Text("\(quiz.grade)/\(quiz.numOfQuestion)")
+            }
+            HStack {
+                Text("Number Of Questions : ")
                 Text("\(quiz.numOfQuestion)")
             }
             HStack {
-                Text("Date & Time :")
+                Text("Time Left : ")
+                Text("\(quiz.timerString)")
+            }
+            HStack {
+                Text("Date & Time : ")
                 Text("\(quiz.DateAndTime.formatted())")
             }
             
@@ -53,9 +66,7 @@ struct SaveQuizResults : View {
                 Button("Save Quiz 💾") {
                     var updatedQuiz = quiz // Make a mutable copy of the quiz
                     updatedQuiz.quizName = quizName // Update the quizName property
-                    
                     QRVM.SaveQuizResult(quiz: updatedQuiz)
-                    print(QRVM.listOfResults.count)
                     page = "quizpage"
                 }.frame(width: 150, height: 50)
                     .background(Color.blue)
