@@ -8,14 +8,14 @@
 import Foundation
 import SwiftUI
 
-struct QuizResultModel : Hashable {
-    var id : UUID = UUID()
+struct QuizResultModel : Hashable , Codable, Identifiable{
+    var id : String
     var quizName : String
     var topic : String
-    var gradeInPercentage : Int
+    var gradeInPercentage : String
     var gradeOutOfTotalNumberOfQuestion : String
-    var totalNumberOfQuestion : Int
+    var totalNumberOfQuestion : String
     var difficulty : String
     var TimeLeft : String
-    var dateAndTime : Date
+    var dateAndTime : String
 }

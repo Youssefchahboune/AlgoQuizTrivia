@@ -11,6 +11,7 @@ import SwiftUI
 struct QuizResultView : View {
     
     var quizResult : QuizResultModel
+    @ObservedObject var QRVM : QuizResultViewModel
     
     var body: some View {
         VStack (alignment: .leading, spacing: 0) {
@@ -18,7 +19,7 @@ struct QuizResultView : View {
             HStack(spacing: 0){
                 Spacer()
                 Button(action: {
-                    //
+                    QRVM.deleteQuizResult(id: quizResult.id)
                 }, label: {
                     Text("X").fontWeight(.black)
                 }).padding(.horizontal,14).padding(.vertical,10).background(.blue).foregroundColor(.white).cornerRadius(50)
@@ -38,7 +39,7 @@ struct QuizResultView : View {
                 Text("Time Left : \(quizResult.TimeLeft)")
             }.padding(.horizontal).padding(.bottom)
             
-            Text("Date&Time : \(quizResult.dateAndTime.formatted())").padding(.horizontal).opacity(50)
+            Text("Date&Time : \(quizResult.dateAndTime)").padding(.horizontal).opacity(50)
 
         }.frame(width: 300,height: 240).background(.white).shadow(radius: 1).padding(.bottom,20)
     }

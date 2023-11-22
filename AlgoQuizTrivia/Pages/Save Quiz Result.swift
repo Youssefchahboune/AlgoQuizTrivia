@@ -58,7 +58,7 @@ struct SaveQuizResults : View {
             }
             HStack {
                 Text("Date & Time : ")
-                Text("\(quiz.DateAndTime.formatted())")
+                Text("\(quiz.DateAndTime)")
             }
             
             

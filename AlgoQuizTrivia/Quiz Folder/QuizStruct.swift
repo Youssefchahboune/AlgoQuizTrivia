@@ -16,5 +16,5 @@ struct Quiz {
     var Timer : Int = 0
     var timerString : String = ""
     var grade : Int = 0
-    var DateAndTime : Date = Date()
+    var DateAndTime : String = String(Date().formatted())
 }

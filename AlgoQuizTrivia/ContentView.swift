@@ -6,6 +6,8 @@
 //
 
 import SwiftUI
+import FirebaseCore
+import FirebaseFirestore
 
 
 struct ContentView: View {

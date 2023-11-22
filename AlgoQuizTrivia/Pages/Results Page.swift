@@ -7,6 +7,8 @@
 
 import Foundation
 import SwiftUI
+import FirebaseCore
+import FirebaseFirestore
 
 struct ResultsPage : View {
     
@@ -14,14 +16,26 @@ struct ResultsPage : View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            Text("Result page").fontWeight(.black).font(.system(size: 35)).multilineTextAlignment(.center).padding(.top,30).foregroundColor(.blue).padding(.bottom,20).padding(.leading,15)
+            Text("Result page").fontWeight(.black).font(.system(size: 35)).padding(.top,30).foregroundColor(.blue).padding(.bottom,20)
             
             ScrollView {
                 VStack {
-                    ForEach(QRVM.listOfResults, id: \.self) { quizResult in
-                        QuizResultView(quizResult: quizResult).padding(.horizontal)
+                    
+                    if(QRVM.listOfResults.isEmpty){
+                        Spacer()
+                        Text("🔎 No Test Result Saved").padding(.top,30).opacity(0.2)
+                        Spacer()
+                    }else {
+                        ForEach(QRVM.listOfResults) { quizResult in
+                            QuizResultView(quizResult: quizResult, QRVM: QRVM).padding(.horizontal)
+                        }
                     }
-                }.padding(.top)
+                }
+                .padding(.top)
+                .onAppear {
+                    // Fetch quiz results from Firestore when the view appears
+                    QRVM.fetchQuizResults()
+                }
             }
             
         }.padding(.top,30).frame(maxWidth: .infinity)
