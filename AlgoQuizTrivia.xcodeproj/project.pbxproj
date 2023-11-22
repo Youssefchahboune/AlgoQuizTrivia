@@ -7,6 +7,19 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		630450C72B0D8E22004E54C3 /* QuestionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 630450C62B0D8E22004E54C3 /* QuestionView.swift */; };
+		630450C92B0D8E7A004E54C3 /* QuizStruct.swift in Sources */ = {isa = PBXBuildFile; fileRef = 630450C82B0D8E7A004E54C3 /* QuizStruct.swift */; };
+		630450CD2B0D8F03004E54C3 /* QuizViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 630450CC2B0D8F03004E54C3 /* QuizViewModel.swift */; };
+		630450D22B0D8F6C004E54C3 /* NavBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 630450D12B0D8F6C004E54C3 /* NavBar.swift */; };
+		630450D42B0D8FBD004E54C3 /* Question Struct.swift in Sources */ = {isa = PBXBuildFile; fileRef = 630450D32B0D8FBD004E54C3 /* Question Struct.swift */; };
+		630450D62B0D8FEE004E54C3 /* Quiz Page.swift in Sources */ = {isa = PBXBuildFile; fileRef = 630450D52B0D8FEE004E54C3 /* Quiz Page.swift */; };
+		630450D82B0D9000004E54C3 /* Quiz Setting Page.swift in Sources */ = {isa = PBXBuildFile; fileRef = 630450D72B0D9000004E54C3 /* Quiz Setting Page.swift */; };
+		630450DA2B0D9099004E54C3 /* Save Quiz Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = 630450D92B0D9099004E54C3 /* Save Quiz Result.swift */; };
+		630450DC2B0D90D7004E54C3 /* Results Page.swift in Sources */ = {isa = PBXBuildFile; fileRef = 630450DB2B0D90D7004E54C3 /* Results Page.swift */; };
+		630450DE2B0D9112004E54C3 /* Quiz Start.swift in Sources */ = {isa = PBXBuildFile; fileRef = 630450DD2B0D9112004E54C3 /* Quiz Start.swift */; };
+		630450E02B0D9146004E54C3 /* Quiz Result View Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 630450DF2B0D9146004E54C3 /* Quiz Result View Model.swift */; };
+		630450E22B0D9170004E54C3 /* Quiz Result View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 630450E12B0D9170004E54C3 /* Quiz Result View.swift */; };
+		630450E42B0D91AE004E54C3 /* Quiz Result Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 630450E32B0D91AE004E54C3 /* Quiz Result Model.swift */; };
 		634F20D42AE07AF500C40777 /* AlgoQuizTriviaApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 634F20D32AE07AF500C40777 /* AlgoQuizTriviaApp.swift */; };
 		634F20D62AE07AF500C40777 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 634F20D52AE07AF500C40777 /* ContentView.swift */; };
 		634F20D82AE07AF600C40777 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 634F20D72AE07AF600C40777 /* Assets.xcassets */; };
@@ -14,6 +27,19 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		630450C62B0D8E22004E54C3 /* QuestionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionView.swift; sourceTree = "<group>"; };
+		630450C82B0D8E7A004E54C3 /* QuizStruct.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizStruct.swift; sourceTree = "<group>"; };
+		630450CC2B0D8F03004E54C3 /* QuizViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizViewModel.swift; sourceTree = "<group>"; };
+		630450D12B0D8F6C004E54C3 /* NavBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavBar.swift; sourceTree = "<group>"; };
+		630450D32B0D8FBD004E54C3 /* Question Struct.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Question Struct.swift"; sourceTree = "<group>"; };
+		630450D52B0D8FEE004E54C3 /* Quiz Page.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Quiz Page.swift"; sourceTree = "<group>"; };
+		630450D72B0D9000004E54C3 /* Quiz Setting Page.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Quiz Setting Page.swift"; sourceTree = "<group>"; };
+		630450D92B0D9099004E54C3 /* Save Quiz Result.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Save Quiz Result.swift"; sourceTree = "<group>"; };
+		630450DB2B0D90D7004E54C3 /* Results Page.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Results Page.swift"; sourceTree = "<group>"; };
+		630450DD2B0D9112004E54C3 /* Quiz Start.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Quiz Start.swift"; sourceTree = "<group>"; };
+		630450DF2B0D9146004E54C3 /* Quiz Result View Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Quiz Result View Model.swift"; sourceTree = "<group>"; };
+		630450E12B0D9170004E54C3 /* Quiz Result View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Quiz Result View.swift"; sourceTree = "<group>"; };
+		630450E32B0D91AE004E54C3 /* Quiz Result Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Quiz Result Model.swift"; sourceTree = "<group>"; };
 		634F20D02AE07AF500C40777 /* AlgoQuizTrivia.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AlgoQuizTrivia.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		634F20D32AE07AF500C40777 /* AlgoQuizTriviaApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlgoQuizTriviaApp.swift; sourceTree = "<group>"; };
 		634F20D52AE07AF500C40777 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -32,6 +58,54 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		630450CA2B0D8EAB004E54C3 /* Quiz Folder */ = {
+			isa = PBXGroup;
+			children = (
+				630450C82B0D8E7A004E54C3 /* QuizStruct.swift */,
+				630450CC2B0D8F03004E54C3 /* QuizViewModel.swift */,
+			);
+			path = "Quiz Folder";
+			sourceTree = "<group>";
+		};
+		630450CB2B0D8EDA004E54C3 /* Question Folder */ = {
+			isa = PBXGroup;
+			children = (
+				630450C62B0D8E22004E54C3 /* QuestionView.swift */,
+				630450D32B0D8FBD004E54C3 /* Question Struct.swift */,
+			);
+			path = "Question Folder";
+			sourceTree = "<group>";
+		};
+		630450CE2B0D8F37004E54C3 /* Quiz Result Folder */ = {
+			isa = PBXGroup;
+			children = (
+				630450DF2B0D9146004E54C3 /* Quiz Result View Model.swift */,
+				630450E12B0D9170004E54C3 /* Quiz Result View.swift */,
+				630450E32B0D91AE004E54C3 /* Quiz Result Model.swift */,
+			);
+			path = "Quiz Result Folder";
+			sourceTree = "<group>";
+		};
+		630450CF2B0D8F47004E54C3 /* Pages */ = {
+			isa = PBXGroup;
+			children = (
+				630450D52B0D8FEE004E54C3 /* Quiz Page.swift */,
+				630450D72B0D9000004E54C3 /* Quiz Setting Page.swift */,
+				630450D92B0D9099004E54C3 /* Save Quiz Result.swift */,
+				630450DB2B0D90D7004E54C3 /* Results Page.swift */,
+				630450DD2B0D9112004E54C3 /* Quiz Start.swift */,
+			);
+			path = Pages;
+			sourceTree = "<group>";
+		};
+		630450D02B0D8F51004E54C3 /* Nav Bar */ = {
+			isa = PBXGroup;
+			children = (
+				630450D12B0D8F6C004E54C3 /* NavBar.swift */,
+			);
+			path = "Nav Bar";
+			sourceTree = "<group>";
+		};
 		634F20C72AE07AF500C40777 = {
 			isa = PBXGroup;
 			children = (
@@ -51,6 +125,11 @@
 		634F20D22AE07AF500C40777 /* AlgoQuizTrivia */ = {
 			isa = PBXGroup;
 			children = (
+				630450D02B0D8F51004E54C3 /* Nav Bar */,
+				630450CF2B0D8F47004E54C3 /* Pages */,
+				630450CE2B0D8F37004E54C3 /* Quiz Result Folder */,
+				630450CB2B0D8EDA004E54C3 /* Question Folder */,
+				630450CA2B0D8EAB004E54C3 /* Quiz Folder */,
 				634F20D32AE07AF500C40777 /* AlgoQuizTriviaApp.swift */,
 				634F20D52AE07AF500C40777 /* ContentView.swift */,
 				634F20D72AE07AF600C40777 /* Assets.xcassets */,
@@ -137,8 +216,21 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				630450E42B0D91AE004E54C3 /* Quiz Result Model.swift in Sources */,
+				630450DA2B0D9099004E54C3 /* Save Quiz Result.swift in Sources */,
+				630450DC2B0D90D7004E54C3 /* Results Page.swift in Sources */,
+				630450D62B0D8FEE004E54C3 /* Quiz Page.swift in Sources */,
+				630450D42B0D8FBD004E54C3 /* Question Struct.swift in Sources */,
+				630450E02B0D9146004E54C3 /* Quiz Result View Model.swift in Sources */,
 				634F20D62AE07AF500C40777 /* ContentView.swift in Sources */,
+				630450D82B0D9000004E54C3 /* Quiz Setting Page.swift in Sources */,
+				630450C92B0D8E7A004E54C3 /* QuizStruct.swift in Sources */,
+				630450C72B0D8E22004E54C3 /* QuestionView.swift in Sources */,
+				630450CD2B0D8F03004E54C3 /* QuizViewModel.swift in Sources */,
 				634F20D42AE07AF500C40777 /* AlgoQuizTriviaApp.swift in Sources */,
+				630450DE2B0D9112004E54C3 /* Quiz Start.swift in Sources */,
+				630450E22B0D9170004E54C3 /* Quiz Result View.swift in Sources */,
+				630450D22B0D8F6C004E54C3 /* NavBar.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
