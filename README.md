@@ -13,14 +13,14 @@
 <img width="315" alt="Screenshot 2023-10-30 at 8 31 51 AM" src="https://github.com/Youssefchahboune/AlgoQuizTrivia/assets/99833243/c0130b97-17ec-4b3f-9ab2-9ef4e3b892fb">
 
 ## Question Component
-<img width="314" alt="Screenshot 2023-10-30 at 8 38 01 AM" src="https://github.com/Youssefchahboune/AlgoQuizTrivia/assets/99833243/2b15be08-03a5-4ff2-9d1d-21f56c969d47">
+<img width="358" alt="Screenshot 2023-11-29 at 5 35 25 PM" src="https://github.com/Youssefchahboune/AlgoQuizTrivia/assets/99833243/da47d96f-6c4e-433b-b902-5c6e530cba8c">
 
 ## Save Quiz page
-<img width="301" alt="Screenshot 2023-10-30 at 8 38 55 AM" src="https://github.com/Youssefchahboune/AlgoQuizTrivia/assets/99833243/caabe9a3-f4e7-4d42-b582-65ddd5765c9e">
-
+<img width="321" alt="Screenshot 2023-11-29 at 5 38 24 PM" src="https://github.com/Youssefchahboune/AlgoQuizTrivia/assets/99833243/1ac6445b-4050-47c3-a91b-7caf5082a769">
 
 ## Results Page
-<img width="348" alt="Screenshot 2023-10-30 at 8 39 33 AM" src="https://github.com/Youssefchahboune/AlgoQuizTrivia/assets/99833243/c2b7591f-6e42-47d7-8f7c-a52b32c5e4dd">
+<img width="331" alt="Screenshot 2023-11-29 at 5 38 53 PM" src="https://github.com/Youssefchahboune/AlgoQuizTrivia/assets/99833243/d37f913d-52ef-4a4a-bb8a-20e8efb9dae0">
+
 
 
 
